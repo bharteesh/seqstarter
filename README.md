@@ -8,7 +8,7 @@ This app demonstrates the use of following features in Seq:
 
 Access other apps/services: http://seqstarterapp.apps.test.cirrostratus.org/
 
-Verified that logs are getting uploaded to S3 kafka logs bucket
+Verified that logs are getting uploaded to S3 kafka logs bucket in JSON format
 
 Circuit Breaker Test: http://seqstarterapp.apps.test.cirrostratus.org/v1/cb 
 (invoke this URL 3 times which returns COULD_NOT_CONNECT and 4th time it returns CIRCUIT_BREAKER_TRIPPED
