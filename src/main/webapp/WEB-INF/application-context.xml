@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="properties">
+			<value>
+				disabled=false
+			</value>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	
+	<!-- need to scan everything to take care of auto-wired annotations -->
+	<context:component-scan base-package="org.cirrostratus" use-default-filters="false" />
+	<bean id="serviceLocatorFactory" class="org.cirrostratus.sequoia.servicelocator.ServiceLocatorFactory">
+		<property name="disabled" value="${disabled}" />
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+		<property name="locations">
+			<list>
+				<value>classpath:seq.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean name="watchableRegistry" class="org.cirrostratus.sequoia.watchable.WatchableRegistry" />
+	
+	<bean class="org.cirrostratus.sequoia.persistentvariable.PersistentVariableFactory">
+	    <property name="watchableRegistry">
+			<ref bean="watchableRegistry" />
+		</property>
+	</bean>
+	
+
+</beans>
